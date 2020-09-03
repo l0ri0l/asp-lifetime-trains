@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TestTask.Services
+namespace TestTask.Enums
 {
-    public class TaskEntityToModelConvertor
+    public enum TaskState
     {
+        created = 0,
+        running = 1,
+        finished = 2,
     }
 }

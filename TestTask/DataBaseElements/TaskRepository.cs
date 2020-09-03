@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ namespace TestTask.DataBaseElements
             _db.Tasks.Add(task);
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             TaskEntity task = _db.Tasks.Find(id);
             if (task != null)
@@ -58,7 +59,8 @@ namespace TestTask.DataBaseElements
 
         public void Update(TaskEntity task)
         {
-            _db.Entry(task).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _db.Update(task);
+            _db.Entry(task).State = EntityState.Modified;
         }
 
         public void Save()

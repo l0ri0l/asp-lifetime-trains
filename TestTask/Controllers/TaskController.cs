@@ -23,9 +23,27 @@ namespace TestTask.Controllers
 
         [HttpGet]
         [Route("task/{id}")]
-        public void GetTask(Guid id)
+        public IActionResult GetTask(string sendedGuid)
         {
-            
+            Guid taskGuid;
+            var isGuid = Guid.TryParse(sendedGuid, out taskGuid);
+            if (isGuid)
+            {
+                var taskModel = _taskDataBaseReadService.FindTask(taskGuid);
+
+                if (taskModel == null)
+                    return NotFound();
+
+                return Ok($"статус: {taskModel.Status}, время обновления задачи: {taskModel.TimeStamp.GetDateTimeFormats()}");
+            }
+            return BadRequest("Ошибка переданного GUID задачи");
+        }
+
+        [HttpPost]
+        public IActionResult Task()
+        {
+
+            return Accepted()
         }
     }
 }

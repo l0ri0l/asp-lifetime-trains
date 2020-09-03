@@ -8,5 +8,7 @@ namespace TestTask.Services
 {
     public class TaskDataBaseWriteService : ITaskDataBaseWriteService
     {
+
     }
+
 }

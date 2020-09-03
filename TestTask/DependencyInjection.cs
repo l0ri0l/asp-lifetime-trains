@@ -12,8 +12,10 @@ namespace TestTask
 {
     public class DependencyInjection
     {
-        public static void BundleConfigurations(IServiceCollection service, IConfiguration configuration)
+        public static void BundleConfigurations(IServiceCollection service)
         {
+            service.AddScoped<IRepository<TaskEntity>, TaskRepository>();
+            service.AddSingleton<ITaskEntityModelConvertHelper, TaskEntityModelConvertHelper>();
             service.AddScoped<ITaskDataBaseReadService, TaskDataBaseReadService>();
             service.AddScoped<ITaskDataBaseWriteService, TaskDataBaseWriteService>();
         }
