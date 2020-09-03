@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TestTask.Enums;
 
-namespace TestTask.Entities
+namespace TestTask.DataBaseElements
 {
     public class TaskEntity
     {
