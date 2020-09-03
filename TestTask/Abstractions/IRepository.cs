@@ -12,6 +12,6 @@ namespace TestTask.Abstractions
         void Add(T entity);
         void Update(T entity);
         void Delete(Guid id);
-        void Save();
+        //void Save();
     }
 }

@@ -29,9 +29,10 @@ namespace TestTask
         {
             services.AddControllers();
             string connection = Configuration.GetConnectionString("DefaultConnection");
+
             services.AddDbContext<TaskContext>(options => options.UseSqlServer(connection));
             services.AddHttpContextAccessor();
-            DependencyInjection.BundleConfigurations(services, Configuration);
+            DependencyInjection.BundleConfigurations(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,11 +43,7 @@ namespace TestTask
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
-
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

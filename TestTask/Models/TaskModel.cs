@@ -16,11 +16,16 @@ namespace TestTask.Models
 
         public TaskState Status { get; set; }
 
-        public async void Run()
+        public TaskModel(Guid guid) 
         {
-            this.Status = TaskState.running;
-            await Task.Delay(1000 * 60 * 2);
-            this.Status = TaskState.finished;
+            Id = guid;
+            TimeStamp = DateTime.Now;
+            Status = TaskState.created;
+        }
+
+        public TaskModel()
+        {
+
         }
     }
 }

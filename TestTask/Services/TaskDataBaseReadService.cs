@@ -12,13 +12,11 @@ namespace TestTask.Services
     public class TaskDataBaseReadService : ITaskDataBaseReadService
     {
         private readonly IRepository<TaskEntity> _repository;
-        private readonly ITaskEntityModelConvertHelper _convertHelper;
 
 
-        public TaskDataBaseReadService(IRepository<TaskEntity> repository, ITaskEntityModelConvertHelper convertHelper)
+        public TaskDataBaseReadService(IRepository<TaskEntity> repository)
         {
             _repository = repository;
-            _convertHelper = convertHelper;
         }
 
         public IEnumerable<TaskModel> FindInStatus(TaskState taskStatus)

@@ -19,6 +19,7 @@ namespace TestTask.DataBaseElements
         public void Add(TaskEntity task)
         {
             _db.Tasks.Add(task);
+            _db.SaveChanges();
         }
 
         public void Delete(Guid id)
@@ -26,6 +27,7 @@ namespace TestTask.DataBaseElements
             TaskEntity task = _db.Tasks.Find(id);
             if (task != null)
                 _db.Tasks.Remove(task);
+            _db.SaveChanges();
         }
 
         private bool disposed = false;
@@ -59,13 +61,9 @@ namespace TestTask.DataBaseElements
 
         public void Update(TaskEntity task)
         {
-            _db.Update(task);
             _db.Entry(task).State = EntityState.Modified;
-        }
-
-        public void Save()
-        {
             _db.SaveChanges();
         }
+
     }
 }
