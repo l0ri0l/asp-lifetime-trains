@@ -15,7 +15,7 @@ namespace TestTask
         public static void BundleConfigurations(IServiceCollection service)
         {
             //service.AddSingleton<DbContext, TaskContext>();
-            service.AddScoped<IRepository<TaskEntity>, TaskRepository>();
+            service.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             service.AddScoped<ITaskDataBaseReadService, TaskDataBaseReadService>();
             service.AddScoped<ITaskDataBaseWriteService, TaskDataBaseWriteService>();
         }

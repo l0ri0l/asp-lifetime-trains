@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TestTask.Abstractions;
+using TestTask.DataBaseElements;
+using TestTask.Models;
 
 namespace TestTask.Controllers
 {
@@ -15,7 +17,6 @@ namespace TestTask.Controllers
     {
         private readonly ITaskDataBaseReadService _taskDataBaseReadService;
         private readonly ITaskDataBaseWriteService _taskDataBaseWriteService;
-
         public TaskController(ITaskDataBaseReadService taskDataBaseReadService, ITaskDataBaseWriteService taskDataBaseWriteService)
         {
             _taskDataBaseReadService = taskDataBaseReadService;
@@ -27,7 +28,7 @@ namespace TestTask.Controllers
         public IActionResult GetTask(string sendedGuid)
         {
             Guid taskGuid;
-            var tasks = _taskDataBaseReadService.GetAll().ToList();
+           // var tasks = _taskDataBaseReadService.GetAll().ToList();
             var isGuid = Guid.TryParse(sendedGuid, out taskGuid);
             if (isGuid)
             {
@@ -47,9 +48,10 @@ namespace TestTask.Controllers
         {
             var taskModel = _taskDataBaseWriteService.CreateTask();
 
-            Task.Run(() => _taskDataBaseWriteService.TestUpdateTask(taskModel));
+            Task.Run(() => _taskDataBaseWriteService.UpdateTask(taskModel));
            
             return StatusCode(202, taskModel.Id);
         }
+
     }
 }

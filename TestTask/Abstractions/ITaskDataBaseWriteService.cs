@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TestTask.DataBaseElements;
+using TestTask.Enums;
 using TestTask.Models;
 
 namespace TestTask.Abstractions
@@ -10,6 +12,6 @@ namespace TestTask.Abstractions
     {
         public TaskModel CreateTask();
 
-        public void TestUpdateTask(TaskModel taskModel);
+        public void UpdateTask(TaskModel taskModel);
     }
 }

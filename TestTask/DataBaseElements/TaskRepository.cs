@@ -1,69 +1,59 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using TestTask.Abstractions;
+using TestTask.DataBaseElements;
 
 namespace TestTask.DataBaseElements
 {
-    public class TaskRepository : IRepository<TaskEntity>
+    public class TaskRepository : ITaskRepository<TaskEntity>
     {
-        private readonly TaskContext _db;
-
-        public TaskRepository(TaskContext db)
+        
+        public TaskRepository()
         {
-            _db = db;
+           
+        }
+        public IQueryable<TaskEntity> FindAll()
+        {
+            using (var context = new TaskContext())
+                return context.Set<TaskEntity>().AsNoTracking();
+        }
+        public IQueryable<TaskEntity> FindByCondition(Expression<Func<TaskEntity, bool>> expression)
+        {
+            using (var context = new TaskContext())
+                return context.Set<TaskEntity>().Where(expression).AsNoTracking();
         }
 
-        public void Add(TaskEntity task)
+        public async Task<TaskEntity> FindOne(Guid id)
         {
-            _db.Tasks.Add(task);
-            _db.SaveChanges();
+            using (var context = new TaskContext())
+                return await context.Set<TaskEntity>().FindAsync(id);
         }
-
-        public void Delete(Guid id)
-        {
-            TaskEntity task = _db.Tasks.Find(id);
-            if (task != null)
-                _db.Tasks.Remove(task);
-            _db.SaveChanges();
-        }
-
-        private bool disposed = false;
-        public virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
+        public void Create(TaskEntity entity)
+        { 
+            using (var context = new TaskContext())
             {
-                if (disposing)
-                {
-                    _db.Dispose();
-                }
+                context.Set<TaskEntity>().Add(entity);
+                context.SaveChanges();
             }
-            this.disposed = true;
         }
-
-        public void Dispose()
+        public void Update(TaskEntity entity)
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            using (var context = new TaskContext())
+            {
+                context.Set<TaskEntity>().Update(entity);
+                context.SaveChanges();
+            }
         }
-
-        public async Task<TaskEntity> Get(Guid id)
+        public void Delete(TaskEntity entity)
         {
-            return await _db.Tasks.FindAsync(id);
+            using (var context = new TaskContext())
+            {
+                context.Set<TaskEntity>().Remove(entity);
+                context.SaveChanges();
+            }
         }
-
-        public IEnumerable<TaskEntity> GetAll()
-        {
-            return _db.Tasks;
-        }
-
-        public void Update(TaskEntity task)
-        {
-            _db.Entry(task).State = EntityState.Modified;
-            _db.SaveChanges();
-        }
-
     }
 }

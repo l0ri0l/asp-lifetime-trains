@@ -10,10 +10,14 @@ namespace TestTask.DataBaseElements
     {
         public DbSet<TaskEntity> Tasks { get; set; }
 
-        public TaskContext(DbContextOptions<TaskContext> options)
-           : base(options)
+        public TaskContext()
         {
-            Database.EnsureCreated();
+           
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=db.Tasks;Trusted_Connection=True;MultipleActiveResultSets=true;");
         }
     }
 }

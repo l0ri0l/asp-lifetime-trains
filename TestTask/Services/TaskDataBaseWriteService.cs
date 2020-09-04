@@ -11,11 +11,11 @@ namespace TestTask.Services
 {
     public class TaskDataBaseWriteService : ITaskDataBaseWriteService
     {
-        private readonly IRepository<TaskEntity> _repository;
+        private IRepositoryWrapper _repoWrapper;
 
-        public TaskDataBaseWriteService(IRepository<TaskEntity> repository)
+        public TaskDataBaseWriteService(IRepositoryWrapper repoWrapper)
         {
-            _repository = repository;
+            _repoWrapper = repoWrapper;
         }
 
         public TaskModel CreateTask()
@@ -30,36 +30,37 @@ namespace TestTask.Services
                     Status = taskModel.Status,
                 };
 
-                _repository.Add(taskEntity);
-            
+            _repoWrapper.Tasks.Create(taskEntity);
+           // _repoWrapper.Save();
 
             return taskModel; 
 
             
         }
 
-        public async void TestUpdateTask(TaskModel taskModel)
+        public async void UpdateTask(TaskModel taskModel)
         {
             taskModel.Status = TaskState.running;
             taskModel.TimeStamp = DateTime.Now;
 
-            var taskEntity = await _repository.Get(taskModel.Id);
-                SinchronaizeModelAndEntity(taskModel, taskEntity, _repository);
+            var taskEntity = await _repoWrapper.Tasks.FindOne(taskModel.Id);
+                SinchronaizeModelAndEntity(taskModel, taskEntity, _repoWrapper.Tasks);
 
                 await Task.Delay(1000 * 60 * 2);
 
                 taskModel.TimeStamp = DateTime.Now;
                 taskModel.Status = TaskState.finished;
 
-                SinchronaizeModelAndEntity(taskModel, taskEntity, _repository);
+                SinchronaizeModelAndEntity(taskModel, taskEntity, _repoWrapper.Tasks);
         }
 
-        private void SinchronaizeModelAndEntity(TaskModel taskModel, TaskEntity taskEntity, IRepository<TaskEntity> repository) 
+        private void SinchronaizeModelAndEntity(TaskModel taskModel, TaskEntity taskEntity, ITaskRepository<TaskEntity> repository) 
         {
             taskEntity.Status = taskModel.Status;
             taskEntity.TimeStamp = taskModel.TimeStamp;
 
-            _repository.Update(taskEntity);
+            _repoWrapper.Tasks.Update(taskEntity);
+          //  _repoWrapper.Save();
         }
     }
 

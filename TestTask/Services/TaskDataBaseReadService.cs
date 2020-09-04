@@ -11,17 +11,16 @@ namespace TestTask.Services
 {
     public class TaskDataBaseReadService : ITaskDataBaseReadService
     {
-        private readonly IRepository<TaskEntity> _repository;
+        private IRepositoryWrapper _repoWrapper;
 
-
-        public TaskDataBaseReadService(IRepository<TaskEntity> repository)
+        public TaskDataBaseReadService(IRepositoryWrapper repoWrapper)
         {
-            _repository = repository;
+            _repoWrapper = repoWrapper;
         }
 
         public IEnumerable<TaskModel> FindInStatus(TaskState taskStatus)
         {
-            var taskModels = _repository.GetAll().Where(e => e.Status == taskStatus).Select(e => new TaskModel()
+            var taskModels = _repoWrapper.Tasks.FindByCondition(e => e.Status == taskStatus).Select(e => new TaskModel()
             {
                 Id = e.Id,
                 TimeStamp = e.TimeStamp,
@@ -35,7 +34,7 @@ namespace TestTask.Services
             if (dateFrom == null && dateTo == null)
                 return null;
 
-            var taskEntities = _repository.GetAll().Where(x => (x.TimeStamp > dateFrom.GetValueOrDefault(DateTime.MinValue))
+            var taskEntities = _repoWrapper.Tasks.FindByCondition(x => (x.TimeStamp > dateFrom.GetValueOrDefault(DateTime.MinValue))
                                                             && (x.TimeStamp < dateFrom.GetValueOrDefault(DateTime.MaxValue)))
             .Select(e => new TaskModel()
             {
@@ -50,7 +49,7 @@ namespace TestTask.Services
 
         public TaskModel FindTask(Guid id)
         {            
-           var taskEntity = _repository.Get(id);
+           var taskEntity = _repoWrapper.Tasks.FindOne(id);
            if(taskEntity.Result != null)
            {
                 var taskModel = new TaskModel()
@@ -67,7 +66,7 @@ namespace TestTask.Services
 
         public IEnumerable<TaskModel> GetAll()
         {
-          var taskModels = _repository.GetAll().Select(e => new TaskModel()
+          var taskModels = _repoWrapper.Tasks.FindAll().Select(e => new TaskModel()
           {
               Id = e.Id,
               TimeStamp = e.TimeStamp,

@@ -29,8 +29,8 @@ namespace TestTask
         {
             services.AddControllers();
             string connection = Configuration.GetConnectionString("DefaultConnection");
-
-            services.AddDbContext<TaskContext>(options => options.UseSqlServer(connection));
+            services.AddEntityFrameworkSqlServer()
+                    .AddDbContext<TaskContext>();
             services.AddHttpContextAccessor();
             DependencyInjection.BundleConfigurations(services);
         }
