@@ -30,7 +30,7 @@ namespace TestTask.Controllers
                 if (taskModel == null)
                     return StatusCode(404, "Задача не найдена");
 
-                return StatusCode(200, $"статус: {taskModel.Status}, время обновления задачи: {taskModel.TimeStamp}");
+                return StatusCode(200, $"статус: {taskModel.Status}, время обновления задачи: {taskModel.TimeStamp:yyyy-MM-ddTHH\\:mm\\:ss.fffffffzzz}");
             }
             return StatusCode(400, "Ошибка переданного GUID задачи");
         }
