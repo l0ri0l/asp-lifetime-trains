@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using TestTask.Abstractions;
-using TestTask.DataBaseElements;
-using TestTask.Models;
 
 namespace TestTask.Controllers
 {
@@ -24,15 +18,14 @@ namespace TestTask.Controllers
         }
 
         [HttpGet]
-        [Route("task/{sendedGuid}")]
-        public IActionResult GetTask(string sendedGuid)
+        [Route("task/{sendedGuid}")] // Метод поиска задачи
+        public async Task<IActionResult> GetTask(string sendedGuid)
         {
             Guid taskGuid;
-           // var tasks = _taskDataBaseReadService.GetAll().ToList();
             var isGuid = Guid.TryParse(sendedGuid, out taskGuid);
             if (isGuid)
             {
-                var taskModel = _taskDataBaseReadService.FindTask(taskGuid);
+                var taskModel = await _taskDataBaseReadService.FindTask(taskGuid);
 
                 if (taskModel == null)
                     return StatusCode(404, "Задача не найдена");
@@ -43,11 +36,12 @@ namespace TestTask.Controllers
         }
 
         [HttpPost]
-        [Route("task")]
+        [Route("task")] // Создание и обновление задачи
         public IActionResult CreateTask()
         {
             var taskModel = _taskDataBaseWriteService.CreateTask();
 
+            // Для фонового выполнения можно было бы использовать Hangfire но задача маленькая, и этот метод можно добавить в расширении
             Task.Run(() => _taskDataBaseWriteService.UpdateTask(taskModel));
            
             return StatusCode(202, taskModel.Id);

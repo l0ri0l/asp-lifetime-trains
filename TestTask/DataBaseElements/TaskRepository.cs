@@ -4,17 +4,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using TestTask.Abstractions;
-using TestTask.DataBaseElements;
 
 namespace TestTask.DataBaseElements
 {
     public class TaskRepository : ITaskRepository<TaskEntity>
     {
-        
-        public TaskRepository()
-        {
-           
-        }
+        // Возможно, что это ахилесова пята всей программы, при классическом использовании контекст базы данных пропадал благодаря Dispose методу
+        // поэтому были добавлены операторы using для контроля времени его жизни
         public IQueryable<TaskEntity> FindAll()
         {
             using (var context = new TaskContext())
@@ -47,6 +43,22 @@ namespace TestTask.DataBaseElements
                 context.SaveChanges();
             }
         }
+
+        public async void AddOrUpdate(TaskEntity entity)
+        {
+            using (var context = new TaskContext())
+            {
+                var taskEnt = await FindOne(entity.Id);
+                if (taskEnt == null)
+                    context.Set<TaskEntity>().Add(entity);
+                else
+                    context.Set<TaskEntity>().Update(entity);
+
+                context.SaveChanges();
+
+            }
+        }
+
         public void Delete(TaskEntity entity)
         {
             using (var context = new TaskContext())

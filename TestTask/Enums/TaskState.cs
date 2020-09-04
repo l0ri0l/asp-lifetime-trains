@@ -10,5 +10,6 @@ namespace TestTask.Enums
         created = 0,
         running = 1,
         finished = 2,
+        crashed = 3 // на случай ошибки в записи
     }
 }

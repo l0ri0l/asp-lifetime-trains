@@ -9,18 +9,19 @@ using TestTask.Models;
 
 namespace TestTask.Services
 {
+    // Дополнительные методы были добавлены для потенциального расширения и использования программы
     public class TaskDataBaseReadService : ITaskDataBaseReadService
     {
-        private IRepositoryWrapper _repoWrapper;
+        private ITaskRepository<TaskEntity> _repo;
 
-        public TaskDataBaseReadService(IRepositoryWrapper repoWrapper)
+        public TaskDataBaseReadService(ITaskRepository<TaskEntity> repo)
         {
-            _repoWrapper = repoWrapper;
+            _repo = repo;
         }
 
-        public IEnumerable<TaskModel> FindInStatus(TaskState taskStatus)
+        public IEnumerable<TaskModel> FindInStatus(TaskState taskStatus) // поиск по статусу
         {
-            var taskModels = _repoWrapper.Tasks.FindByCondition(e => e.Status == taskStatus).Select(e => new TaskModel()
+            var taskModels = _repo.FindByCondition(e => e.Status == taskStatus).Select(e => new TaskModel()
             {
                 Id = e.Id,
                 TimeStamp = e.TimeStamp,
@@ -29,12 +30,12 @@ namespace TestTask.Services
             return taskModels;
         }
 
-        public IEnumerable<TaskModel> FindInTime(DateTime? dateFrom, DateTime? dateTo)
+        public IEnumerable<TaskModel> FindInTime(DateTime? dateFrom, DateTime? dateTo) // поиск по времени
         {
             if (dateFrom == null && dateTo == null)
                 return null;
 
-            var taskEntities = _repoWrapper.Tasks.FindByCondition(x => (x.TimeStamp > dateFrom.GetValueOrDefault(DateTime.MinValue))
+            var taskEntities = _repo.FindByCondition(x => (x.TimeStamp > dateFrom.GetValueOrDefault(DateTime.MinValue))
                                                             && (x.TimeStamp < dateFrom.GetValueOrDefault(DateTime.MaxValue)))
             .Select(e => new TaskModel()
             {
@@ -47,16 +48,16 @@ namespace TestTask.Services
 
         }
 
-        public TaskModel FindTask(Guid id)
+        public async Task<TaskModel> FindTask(Guid id) // поиск одной задачи
         {            
-           var taskEntity = _repoWrapper.Tasks.FindOne(id);
-           if(taskEntity.Result != null)
+           var taskEntity = await _repo.FindOne(id);
+           if(taskEntity != null)
            {
                 var taskModel = new TaskModel()
                 {
-                    Id = taskEntity.Result.Id,
-                    TimeStamp = taskEntity.Result.TimeStamp,
-                    Status = taskEntity.Result.Status
+                    Id = taskEntity.Id,
+                    TimeStamp = taskEntity.TimeStamp,
+                    Status = taskEntity.Status
                 };
                 return taskModel;
            }
@@ -64,9 +65,9 @@ namespace TestTask.Services
            
         }
 
-        public IEnumerable<TaskModel> GetAll()
+        public IEnumerable<TaskModel> GetAll() // выборка всех из базы
         {
-          var taskModels = _repoWrapper.Tasks.FindAll().Select(e => new TaskModel()
+          var taskModels = _repo.FindAll().Select(e => new TaskModel()
           {
               Id = e.Id,
               TimeStamp = e.TimeStamp,
