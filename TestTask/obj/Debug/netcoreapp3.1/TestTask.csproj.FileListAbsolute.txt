@@ -2,7 +2,6 @@ E:\Users\Arwel\source\repos\TestTask\TestTask\bin\Debug\netcoreapp3.1\appsetting
 E:\Users\Arwel\source\repos\TestTask\TestTask\bin\Debug\netcoreapp3.1\appsettings.json
 E:\Users\Arwel\source\repos\TestTask\TestTask\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
 E:\Users\Arwel\source\repos\TestTask\TestTask\bin\Debug\netcoreapp3.1\TestTask.exe
-E:\Users\Arwel\source\repos\TestTask\TestTask\obj\Debug\netcoreapp3.1\TestTask.csprojAssemblyReference.cache
 E:\Users\Arwel\source\repos\TestTask\TestTask\obj\Debug\netcoreapp3.1\TestTask.AssemblyInfoInputs.cache
 E:\Users\Arwel\source\repos\TestTask\TestTask\obj\Debug\netcoreapp3.1\TestTask.AssemblyInfo.cs
 E:\Users\Arwel\source\repos\TestTask\TestTask\obj\Debug\netcoreapp3.1\TestTask.RazorTargetAssemblyInfo.cache
@@ -48,8 +47,6 @@ E:\Users\Arwel\source\repos\TestTask\TestTask\bin\Debug\netcoreapp3.1\runtimes\w
 E:\Users\Arwel\source\repos\TestTask\TestTask\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 E:\Users\Arwel\source\repos\TestTask\TestTask\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 E:\Users\Arwel\source\repos\TestTask\TestTask\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-E:\Users\Arwel\source\repos\TestTask\TestTask\obj\Debug\netcoreapp3.1\TestTask.csproj.CoreCompileInputs.cache
-E:\Users\Arwel\source\repos\TestTask\TestTask\obj\Debug\netcoreapp3.1\TestTask.MvcApplicationPartsAssemblyInfo.cache
 E:\Users\Arwel\source\repos\TestTask\TestTask\bin\Debug\netcoreapp3.1\TestTask.deps.json
 E:\Users\Arwel\source\repos\TestTask\TestTask\bin\Debug\netcoreapp3.1\TestTask.runtimeconfig.json
 E:\Users\Arwel\source\repos\TestTask\TestTask\bin\Debug\netcoreapp3.1\TestTask.runtimeconfig.dev.json
@@ -64,3 +61,6 @@ E:\Users\Arwel\source\repos\TestTask\TestTask\bin\Debug\netcoreapp3.1\runtimes\w
 E:\Users\Arwel\source\repos\TestTask\TestTask\obj\Debug\netcoreapp3.1\TestTask.dll
 E:\Users\Arwel\source\repos\TestTask\TestTask\obj\Debug\netcoreapp3.1\TestTask.pdb
 E:\Users\Arwel\source\repos\TestTask\TestTask\obj\Debug\netcoreapp3.1\TestTask.genruntimeconfig.cache
+E:\Users\Arwel\source\repos\TestTask\TestTask\obj\Debug\netcoreapp3.1\TestTask.csproj.CoreCompileInputs.cache
+E:\Users\Arwel\source\repos\TestTask\TestTask\obj\Debug\netcoreapp3.1\TestTask.MvcApplicationPartsAssemblyInfo.cache
+E:\Users\Arwel\source\repos\TestTask\TestTask\obj\Debug\netcoreapp3.1\TestTask.csprojAssemblyReference.cache

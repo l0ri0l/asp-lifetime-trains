@@ -1,11 +1,12 @@
-﻿using TestTask.Models;
+﻿using System.Threading.Tasks;
+using TestTask.Models;
 
 namespace TestTask.Abstractions
 {
     public interface ITaskDataBaseWriteService
     {
-        public TaskModel CreateTask();
+        public Task<TaskModel> CreateTask();
 
-        public void UpdateTask(TaskModel taskModel);
+        public Task UpdateTask(TaskModel taskModel);
     }
 }

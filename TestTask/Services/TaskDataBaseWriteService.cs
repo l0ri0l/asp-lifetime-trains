@@ -16,7 +16,7 @@ namespace TestTask.Services
             _repo = repo;
         }
 
-        public TaskModel CreateTask() // создание задачи
+        public async Task<TaskModel> CreateTask() // создание задачи
         {
             var id = Guid.NewGuid();
             var taskModel = new TaskModel(id);
@@ -28,7 +28,7 @@ namespace TestTask.Services
                     Status = taskModel.Status,
                 };
 
-            _repo.Create(taskEntity);
+            await _repo.Create(taskEntity);
            
 
             return taskModel; 
@@ -39,23 +39,24 @@ namespace TestTask.Services
         //этот метод можно было бы вынести в TaskModel в метод RunTask() или в отдельный сервис TaskRunner
         //но так как по сути выполняется только перезапись в БД, оставим его здесь
 
-        public async void UpdateTask(TaskModel taskModel) {
+        public async Task UpdateTask(TaskModel taskModel) {
             try
             {
                 taskModel.Status = TaskState.running;
                 taskModel.TimeStamp = DateTime.Now;
 
                 var taskEntity = await _repo.FindOne(taskModel.Id);
-                SinchronaizeModelAndEntity(taskModel, taskEntity);
+                SynchronizeModelAndEntity(taskModel, taskEntity);
 
                 await Task.Delay(1000 * 60 * 2);
 
+                taskEntity = await _repo.FindOne(taskModel.Id);
                 taskModel.TimeStamp = DateTime.Now;
                 taskModel.Status = TaskState.finished;
 
-                SinchronaizeModelAndEntity(taskModel, taskEntity);
+                SynchronizeModelAndEntity(taskModel, taskEntity);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 taskModel.Status = TaskState.crashed;
                 var taskEnt = new TaskEntity()
@@ -64,11 +65,11 @@ namespace TestTask.Services
                     TimeStamp = taskModel.TimeStamp,
                     Status = taskModel.Status
                 };
-                _repo.AddOrUpdate(taskEnt);
+                await _repo.AddOrUpdate(taskEnt);
             }
         }
 
-        private void SinchronaizeModelAndEntity(TaskModel taskModel, TaskEntity taskEntity) 
+        private void SynchronizeModelAndEntity(TaskModel taskModel, TaskEntity taskEntity) 
         {
             taskEntity.Status = taskModel.Status;
             taskEntity.TimeStamp = taskModel.TimeStamp;
