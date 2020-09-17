@@ -36,7 +36,7 @@ namespace TestTask.Controllers
         }
 
         [HttpPost] // Создание и обновление задачи
-        public async Task<IActionResult> CreateTask(string uselessKey) //просто потому что post не может принимать пустое тело. 
+        public async Task<IActionResult> CreateTask()
         {
             var taskModel = await _taskDataBaseWriteService.CreateTask();
 
