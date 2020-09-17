@@ -6,7 +6,7 @@ using TestTask.Abstractions;
 namespace TestTask.Controllers
 {
     [ApiController]
-    [Route("api")]
+    [Route("api/[controller]")]
     public class TaskController : ControllerBase
     {
         private readonly ITaskDataBaseReadService _taskDataBaseReadService;
@@ -18,7 +18,7 @@ namespace TestTask.Controllers
         }
 
         [HttpGet]
-        [Route("task/{sendedGuid}")] // Метод поиска задачи
+        [Route("{sendedGuid}")] // Метод поиска задачи
         public async Task<IActionResult> GetTask(string sendedGuid)
         {
             Guid taskGuid;
@@ -35,14 +35,13 @@ namespace TestTask.Controllers
             return StatusCode(400, "Ошибка переданного GUID задачи");
         }
 
-        [HttpPost]
-        [Route("task")] // Создание и обновление задачи
-        public IActionResult CreateTask()
+        [HttpPost] // Создание и обновление задачи
+        public async Task<IActionResult> CreateTask(string uselessKey) //просто потому что post не может принимать пустое тело. 
         {
-            var taskModel = _taskDataBaseWriteService.CreateTask();
+            var taskModel = await _taskDataBaseWriteService.CreateTask();
 
             // Для фонового выполнения можно было бы использовать Hangfire но задача маленькая, и этот метод можно добавить в расширении
-            Task.Run(() => _taskDataBaseWriteService.UpdateTask(taskModel));
+            _taskDataBaseWriteService.UpdateTask(taskModel); //await нужен только внутри метода для обновления статуса задания, мы просто возвращаем клиенту Guid созданной задачи
            
             return StatusCode(202, taskModel.Id);
         }

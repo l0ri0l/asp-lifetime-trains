@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace TestTask.DataBaseElements
 {
@@ -7,14 +8,11 @@ namespace TestTask.DataBaseElements
         //Контекст
         public DbSet<TaskEntity> Tasks { get; set; }
 
-        public TaskContext()
+        public TaskContext(DbContextOptions<TaskContext> options) : base(options)
         {
-           
+            Database.EnsureCreated();
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=db.Tasks;Trusted_Connection=True;MultipleActiveResultSets=true;");
-        }
     }
 }
+
